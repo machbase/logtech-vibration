@@ -1,0 +1,36 @@
+SQL_SELECT(
+    'time', 'value',
+    from('fft', param('tag') ?? 'EQ0^TAG0'),
+    between('last-1s', 'last')
+)
+MAPKEY('sample')
+GROUPBYKEY()
+FFT(minHz(1), maxHz(1000))
+
+CHART(
+    chartOption(strSprintf(`{
+        tooltip: {
+            trigger: 'item'
+        },
+       title: {
+            text: '%s',
+            left: 'center'
+        },
+       xAxis: {
+            type: "category",
+            axisLabel: {
+                 formatter:  function (value) {
+                   return (Math.round(value * 10) / 10).toString();
+                  }
+            },
+            data: column(0)
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                data: column(1)
+            }
+        ]
+    }`, param('title') ?? "FFT"))
+)
