@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>Realtime FFT Analysis</title>
+<title>Realtime FFT ALARM for TAG0 </title>
 <style>
   body {
     display: flex;
@@ -74,23 +74,23 @@
 
   // 1초마다 fetchData 함수 호출
   setInterval(fetchData, 1000);
+  setInterval(reloadIframes, 3000);
 </script>
 </head>
 <body>
 <div class="iframe-title">
-<h1>실시간 FFT(고속 푸리에 변환) 데모 2D/3D</h1>
+<h1>실시간 FFT 데이터 분석 데모 (3 sec update) </h1>
 <h2 id="recordLabel">레코드 갯수: 0</h2> <!-- 레코드 갯수를 표시할 요소 -->
-<button onclick="reloadIframes()">실시간 데이터로 FFT 그래프로 다시 그리기 </button>
+<button onclick="reloadIframes()">실시간 데이터 분석 </button>
 </div>
 <div class="iframe-container">
-  <iframe src="/db/tql/logtech-vibration/logtech-fft.tql?tag=EQ0^TAG0&title=FFT for TAG0"></iframe>
-  <iframe src="/db/tql/logtech-vibration/logtech-fft.tql?tag=EQ0^TAG1&title=FFT for TAG1"></iframe>
-  <iframe src="/db/tql/logtech-vibration/logtech-fft.tql?tag=EQ0^TAG2&title=FFT for TAG2"></iframe>
+  <iframe src="/db/tql/logtech-vibration/logtech-fft.tql?tag=EQ0^TAG0&title=FFT for TAG0 (last 3 second) "></iframe>
+  <iframe src="/db/tql/logtech-vibration/logtech-fft-alarm.tql?tag=EQ0^TAG0&title=ALARM for FFT amplitude"></iframe>
   </div>
-  <div class="iframe-container">
-  <iframe src="/db/tql/logtech-vibration/logtech-data-stat.tql?tag=EQ0^TAG0&title=STAT for TAG0"></iframe>
-  <iframe src="/db/tql/logtech-vibration/logtech-data-stat.tql?tag=EQ0^TAG0&title=STAT for TAG1"></iframe>
-  <iframe src="/db/tql/logtech-vibration/logtech-data-stat.tql?tag=EQ0^TAG0&title=STAT for TAG2"></iframe>
+<div class="iframe-container">
+  <iframe src="/db/tql/logtech-vibration/logtech-data-stat.tql?tag=EQ0^TAG0&title=STAT for TAG0 (last 20 second)"></iframe>
+  <iframe src="/db/tql/logtech-vibration/logtech-data-stat-alarm.tql?tag=EQ0^TAG0&title=ALARM for TAG0""></iframe>
+  </div>
   
   
   </div>

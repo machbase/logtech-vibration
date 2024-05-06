@@ -1,11 +1,13 @@
 SQL_SELECT(
     'time', 'value',
     from('fft', param('tag') ?? 'EQ0^TAG0'),
-    between('last-3s', 'last')
+    between('last-1s', 'last')
 )
 MAPKEY('sample')
 GROUPBYKEY()
 FFT(minHz(1), maxHz(1000))
+FLATTEN()
+MAPVALUE(1, value(1) > 6 ? value(1) : NULL)
 
 CHART(
     chartOption(strSprintf(`{
@@ -16,6 +18,12 @@ CHART(
             text: '%s',
             left: 'center'
         },
+        legend: {
+          show: true,
+            left: 'center',
+            top : 'bottom'
+
+        },  
        xAxis: {
             type: "category",
             axisLabel: {
@@ -28,9 +36,13 @@ CHART(
         yAxis: {},
         series: [
             {
-                type: "line",
-                data: column(1)
+                name: 'Amplitude (> 6.0)',
+                type: "scatter",
+                data: column(1),
+                itemStyle: {
+                 color: 'red' // 라인 색상
+                }
             }
         ]
-    }`, param('title') ?? "FFT"))
+    }`, param('title') ?? "ALARM for FFT "))
 )

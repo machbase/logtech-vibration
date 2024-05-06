@@ -9,20 +9,18 @@ GROUP(
         "TIME"
     ),
     max( value(1),
-         predict("LinearRegression"),
-         "PEAK"
+          "PEAK ALARM"
     ),
-    rms( value(1),
-         predict("LinearRegression"),
-          "RMS"
-    ),
-    min( value(1),
-        predict("LinearRegression"),
-          "TROUGH"
+    rms( value(1),      
+          "RMS ALARM"
     )
-    
 )
+
 MAPVALUE(0, strTime(value(0), 'DEFAULT', tz('Local')))
+
+MAPVALUE(1, value(1) > 199.97 ? value(1) : NULL)
+MAPVALUE(2, value(2) > 117.0 ? value(2) : NULL)
+
 CHART(
     chartOption(strSprintf(`{
         tooltip: {
@@ -53,19 +51,20 @@ CHART(
         },  
         series: [
             {
-                name: 'PEAK',
-                type: "line",
-                data: column(1)
+                name: 'PEAK  ALARM (> 199.97)',
+                type: "scatter",
+                data: column(1),
+                itemStyle: {
+                color: 'red' // 라인 색상
+                }
             },
             {
-                name : 'RMS',
-                type: "line",
-                data: column(2)
-            },
-            {
-                name : 'TROUGH',
-                type: "line",
-                data: column(3)
+                name : 'RMS ALARM (> 117.0)',
+                type: "scatter",
+                data: column(2),
+                itemStyle: {
+                 color: 'magenta' // 라인 색상
+                }
             }
         ]
     }`, param('title') ?? 'X'))
